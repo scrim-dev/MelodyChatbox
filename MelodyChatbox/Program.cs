@@ -6,7 +6,7 @@ namespace MelodyChatbox
 {
     internal class Program
     {
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public static bool OscRunning { get; set; } = false;
 
         static void Main()

@@ -32,14 +32,14 @@ namespace MelodyChatbox.Utils
             private readonly int _barLength;
             private readonly char _filledChar;
             private readonly char _unfilledChar;
-            private readonly char[] _cursorSpinChars = { '|', '/', '-', '\\' };
-            private int _frameIndex = 0;
+            private readonly char _cursorChar;
 
-            public StringSeekBar(int barLength = 30, char filledChar = '=', char unfilledChar = '-')
+            public StringSeekBar(int barLength = 30, char filledChar = '=', char unfilledChar = '-', char cursorChar = 'O')
             {
                 _barLength = barLength;
                 _filledChar = filledChar;
                 _unfilledChar = unfilledChar;
+                _cursorChar = cursorChar;
             }
 
             public string GenerateSeekBar(TimeSpan currentPosition, TimeSpan totalDuration)
@@ -51,9 +51,7 @@ namespace MelodyChatbox.Utils
                 int filledLength = (int)(_barLength * progressRatio);
                 filledLength = Math.Clamp(filledLength, 0, _barLength - 1);
 
-                char spinningCursor = _cursorSpinChars[_frameIndex++ % _cursorSpinChars.Length];
-
-                string seekBar = new string(_filledChar, filledLength) + spinningCursor + new string(_unfilledChar, _barLength - filledLength - 1);
+                string seekBar = new string(_filledChar, filledLength) + _cursorChar + new string(_unfilledChar, _barLength - filledLength - 1);
                 string formattedCurrent = $"{(int)currentPosition.TotalMinutes:D2}:{currentPosition.Seconds:D2}";
                 string formattedTotal = $"{(int)totalDuration.TotalMinutes:D2}:{totalDuration.Seconds:D2}";
 
