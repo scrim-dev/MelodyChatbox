@@ -21,6 +21,8 @@ namespace MelodyChatbox.WMC
         public static void Start(int type)
         {
             WMController.Media_Manager?.ForceUpdate();
+            ConsLog.Warn("Forcefully updating WMC Manager.");
+            Thread.Sleep(1300);
             switch (type)
             {
                 case 1:
@@ -105,6 +107,7 @@ namespace MelodyChatbox.WMC
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("Session Paused!");
                         }
+                        Thread.Sleep(Speed);
                     }
                     break;
                 default:

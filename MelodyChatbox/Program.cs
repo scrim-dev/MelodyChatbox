@@ -6,18 +6,18 @@ namespace MelodyChatbox
 {
     internal class Program
     {
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public static bool OscRunning { get; set; } = false;
 
         //App entry
         static void Main()
         {
-            Console.Title = "";
+            Console.Title = "Loading...";
             Console.CancelKeyPress += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
 
             MStarter:
-            ConsLog.SetTitle();
+            ConsLog.SetTitle("Welcome!");
             ConsLog.PrintLogo();
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n\nHow would you like to display your music?\n");
