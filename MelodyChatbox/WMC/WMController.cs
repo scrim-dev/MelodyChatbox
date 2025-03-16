@@ -55,6 +55,7 @@ namespace MelodyChatbox.WMC
             ConsLog.LogWMC($"{sender.Id}, STATUS: {args.PlaybackStatus}");
         }
 
+        //Need to make this actually get the time position lol I will fix later
         private static void OnAnyTimelinePropertyChanged(MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties)
         {
             ConsLog.LogWMC($"{mediaSession.Id}, TL: {timelineProperties.StartTime}/{timelineProperties.EndTime}");

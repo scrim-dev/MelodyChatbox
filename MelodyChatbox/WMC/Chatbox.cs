@@ -11,6 +11,13 @@ namespace MelodyChatbox.WMC
     internal class Chatbox
     {
         public static int Speed { get; set; } = 1500;
+        public static int AnimFrame { get; private set; } = 0;
+
+        private static readonly string[] Animation =
+        [
+            "", "[]", "[-]", "[\\/]", "[---]", "[/--\\]", "[-----]", "[\\------/]", "[/---------\\]", "[\\---------/]", "[/------\\]", "[-----]", "[\\--/]", "[---]", "[/\\]", "[-]", "[]", ""
+        ];
+
         public static void Start(int type)
         {
             switch(type)
@@ -46,11 +53,14 @@ namespace MelodyChatbox.WMC
                     WMController.Init();
                     while (Program.OscRunning)
                     {
+                        if (AnimFrame > Animation.Length) { AnimFrame = 0; }
+                        AnimFrame++;
+
                         WMController.Media_Manager?.ForceUpdate();
                         ConsLog.SetTitle($"Blasting {MediaInfo.Artist}");
-                        OscChatbox.SendMessage($"", true, false);
+                        OscChatbox.SendMessage($"{Animation[AnimFrame]}\n{MediaInfo.Artist} - {MediaInfo.Track}\n{Animation[AnimFrame]}", true, false);
 
-                        Console.WriteLine($"");
+                        Console.WriteLine($"{Animation[AnimFrame]}\n{MediaInfo.Artist} - {MediaInfo.Track}\n{Animation[AnimFrame]}");
                         Thread.Sleep(Speed);
                     }
                     break;
