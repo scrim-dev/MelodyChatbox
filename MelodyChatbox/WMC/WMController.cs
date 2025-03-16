@@ -13,9 +13,11 @@ using static WindowsMediaController.MediaManager;
 
 namespace MelodyChatbox.WMC
 {
+    //https://github.com/DubyaDude/WindowsMediaController
     internal class WMController
     {
         public static MediaManager? Media_Manager { get; set; }
+        public static bool AudioNotify { get; set; } = false;
 
         public static void Init()
         {
@@ -53,12 +55,30 @@ namespace MelodyChatbox.WMC
         private static void OnAnyPlaybackStateChanged(MediaSession sender, GlobalSystemMediaTransportControlsSessionPlaybackInfo args)
         {
             ConsLog.LogWMC($"{sender.Id}, STATUS: {args.PlaybackStatus}");
+
+            if (args.PlaybackStatus.ToString() == "Paused")
+            {
+                MediaInfo.IsPaused = true;
+                if (AudioNotify)
+                {
+                    Console.Beep(500, 400);
+                    Console.Beep(1500, 100);
+                }
+            }
+            else
+            {
+                if (AudioNotify)
+                {
+                    Console.Beep(1500, 100);
+                    Console.Beep(1500, 100);
+                }
+                MediaInfo.IsPaused = false;
+            }
         }
 
-        //Need to make this actually get the time position lol I will fix later
         private static void OnAnyTimelinePropertyChanged(MediaSession mediaSession, GlobalSystemMediaTransportControlsSessionTimelineProperties timelineProperties)
         {
-            ConsLog.LogWMC($"{mediaSession.Id}, TL: {timelineProperties.StartTime}/{timelineProperties.EndTime}");
+            ConsLog.LogWMC($"{mediaSession.Id}, TL: {timelineProperties.StartTime} to {timelineProperties.EndTime}");
             MediaInfo.StartTime = timelineProperties.StartTime;
             MediaInfo.EndTime = timelineProperties.EndTime;
             MediaInfo.CurTime = timelineProperties.Position;

@@ -13,24 +13,37 @@ namespace MelodyChatbox.WMC
         public static int Speed { get; set; } = 1500;
         public static int AnimFrame { get; private set; } = 0;
 
-        private static readonly string[] Animation =
+        private static readonly string[] BorderThingys =
         [
-            "", "[]", "[-]", "[\\/]", "[---]", "[/--\\]", "[-----]", "[\\------/]", "[/---------\\]", "[\\---------/]", "[/------\\]", "[-----]", "[\\--/]", "[---]", "[/\\]", "[-]", "[]", ""
+            "[/]","[-]","[\\]","[/]","[-]","[\\]","[/]","[-]","[\\]","[/]","[-]","[\\]","[/]","[-]","[\\]","[/]","[-]","[\\]","[/]","[-]","[\\]","[/]","[-]","[\\]","[/]","[-]","[\\]"
         ];
 
         public static void Start(int type)
         {
-            switch(type)
+            WMController.Media_Manager?.ForceUpdate();
+            switch (type)
             {
                 case 1:
                     WMController.Init();
                     while (Program.OscRunning)
                     {
-                        WMController.Media_Manager?.ForceUpdate();
-                        ConsLog.SetTitle($"Blasting {MediaInfo.Artist}");
-                        OscChatbox.SendMessage($"{MediaInfo.Artist} - {MediaInfo.Track}", true, false);
+                        if (!MediaInfo.IsPaused)
+                        {
+                            ConsLog.SetTitle($"Blasting {MediaInfo.Artist}");
+                            OscChatbox.SendMessage($"{MediaInfo.Artist} - {MediaInfo.Track}", true, false);
 
-                        Console.WriteLine($"CB: {MediaInfo.Artist} - {MediaInfo.Track}");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("CHATBOX PREVIEW");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine($"{MediaInfo.Artist} - {MediaInfo.Track}");
+                        }
+                        else
+                        {
+                            ConsLog.SetTitle("PAUSED!");
+                            OscChatbox.SendMessage("[Paused]", true, false);
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("Session Paused!");
+                        }
                         Thread.Sleep(Speed);
                     }
                     break;
@@ -38,14 +51,28 @@ namespace MelodyChatbox.WMC
                     WMController.Init();
                     while (Program.OscRunning)
                     {
-                        StringUtils.StringSeekBar SB = new();
-                        WMController.Media_Manager?.ForceUpdate();
-                        ConsLog.SetTitle($"Blasting {MediaInfo.Artist}");
-                        OscChatbox.SendMessage($"{MediaInfo.Artist} - {MediaInfo.Track}\n" +
-                            $"{SB.GenerateSeekBar(MediaInfo.CurTime, MediaInfo.TOTALTIME)}", true, false);
+                        if (!MediaInfo.IsPaused)
+                        {
+                            StringUtils.StringSeekBar SB = new();
+                            
+                            ConsLog.SetTitle($"Blasting {MediaInfo.Artist}");
+                            OscChatbox.SendMessage($"{MediaInfo.Artist} - {MediaInfo.Track}\n" +
+                                $"{SB.GenerateSeekBar(MediaInfo.CurTime, MediaInfo.TOTALTIME)}", true, false);
 
-                        Console.WriteLine($"CB: {MediaInfo.Artist} - {MediaInfo.Track}\n" +
-                            $"{SB.GenerateSeekBar(MediaInfo.CurTime, MediaInfo.TOTALTIME)}");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("CHATBOX PREVIEW");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine($"{MediaInfo.Artist} - {MediaInfo.Track}\n" +
+                                $"{SB.GenerateSeekBar(MediaInfo.CurTime, MediaInfo.TOTALTIME)}");
+                            MediaInfo.CurTime = MediaInfo.CurTime.Add(TimeSpan.FromMilliseconds(Speed)); //This is probably not accurate but it works
+                        }
+                        else
+                        {
+                            ConsLog.SetTitle("PAUSED!");
+                            OscChatbox.SendMessage("[Paused]", true, false);
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("Session Paused!");
+                        }
                         Thread.Sleep(Speed);
                     }
                     break;
@@ -53,15 +80,31 @@ namespace MelodyChatbox.WMC
                     WMController.Init();
                     while (Program.OscRunning)
                     {
-                        if (AnimFrame > Animation.Length) { AnimFrame = 0; }
-                        AnimFrame++;
+                        if (!MediaInfo.IsPaused)
+                        {
+                            //Placing this in a try catch cuz of some WEIRD error I can't get rid of
+                            try
+                            {
+                                if (AnimFrame > BorderThingys.Length) { AnimFrame = 0; }
+                                AnimFrame++;
 
-                        WMController.Media_Manager?.ForceUpdate();
-                        ConsLog.SetTitle($"Blasting {MediaInfo.Artist}");
-                        OscChatbox.SendMessage($"{Animation[AnimFrame]}\n{MediaInfo.Artist} - {MediaInfo.Track}\n{Animation[AnimFrame]}", true, false);
+                                ConsLog.SetTitle($"Blasting {MediaInfo.Artist}");
+                                OscChatbox.SendMessage($"{BorderThingys[AnimFrame]} {MediaInfo.Artist} - {MediaInfo.Track} {BorderThingys[AnimFrame]}", true, false);
 
-                        Console.WriteLine($"{Animation[AnimFrame]}\n{MediaInfo.Artist} - {MediaInfo.Track}\n{Animation[AnimFrame]}");
-                        Thread.Sleep(Speed);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("CHATBOX PREVIEW");
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.WriteLine($"{BorderThingys[AnimFrame]} {MediaInfo.Artist} - {MediaInfo.Track} {BorderThingys[AnimFrame]}");
+                            }
+                            catch { }
+                        }
+                        else
+                        {
+                            ConsLog.SetTitle("PAUSED!");
+                            OscChatbox.SendMessage("[Paused]", true, false);
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("Session Paused!");
+                        }
                     }
                     break;
                 default:

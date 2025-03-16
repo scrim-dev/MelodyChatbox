@@ -14,5 +14,6 @@ namespace MelodyChatbox.WMC
         public static TimeSpan CurTime { get; set; }
         public static TimeSpan EndTime { get; set; }
         public static TimeSpan TOTALTIME { get; set; }
+        public static bool IsPaused { get; set; } = false;
     }
 }

@@ -6,11 +6,13 @@ namespace MelodyChatbox
 {
     internal class Program
     {
-        public const string Version = "test";
+        public const string Version = "1.0";
         public static bool OscRunning { get; set; } = false;
 
+        //App entry
         static void Main()
         {
+            Console.Title = "";
             Console.CancelKeyPress += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
 
@@ -34,16 +36,19 @@ namespace MelodyChatbox
                 switch (option)
                 {
                     case 1:
+                        Console.Clear();
                         OscRunning = true;
                         Console.ForegroundColor = ConsoleColor.White;
                         Chatbox.Start(1);
                         break;
                     case 2:
+                        Console.Clear();
                         OscRunning = true;
                         Console.ForegroundColor = ConsoleColor.White;
                         Chatbox.Start(2);
                         break;
                     case 3:
+                        Console.Clear();
                         OscRunning = true;
                         Console.ForegroundColor = ConsoleColor.White;
                         Chatbox.Start(3);
@@ -55,9 +60,9 @@ namespace MelodyChatbox
                         goto MStarter;
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                ConsLog.Error("Invalid option. Please try again.");
+                ConsLog.Error($"Invalid option. Or Application error!\n\n{ex}");
                 Thread.Sleep(3400);
                 Console.Clear();
                 goto MStarter;
@@ -75,6 +80,7 @@ namespace MelodyChatbox
             Quit();
         }
 
+        //Better than just dropping out the app, will add json config later for saves
         private static void Quit()
         {
             if (OscRunning)

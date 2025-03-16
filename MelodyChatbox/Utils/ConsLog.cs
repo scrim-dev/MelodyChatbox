@@ -69,6 +69,7 @@ namespace MelodyChatbox.Utils
             }
         }
 
+        //Could of been done better lol
         public static void PrintLogo()
         {
             Console.WriteLine(@" /$$      /$$ /$$$$$$$$ /$$        /$$$$$$  /$$$$$$$  /$$     /$$".Pastel("#0080ff"));
