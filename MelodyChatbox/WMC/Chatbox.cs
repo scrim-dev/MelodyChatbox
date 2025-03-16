@@ -56,7 +56,7 @@ namespace MelodyChatbox.WMC
                         if (!MediaInfo.IsPaused)
                         {
                             StringUtils.StringSeekBar SB = new();
-                            
+
                             ConsLog.SetTitle($"Blasting {MediaInfo.Artist}");
                             OscChatbox.SendMessage($"{MediaInfo.Artist} - {MediaInfo.Track}\n" +
                                 $"{SB.GenerateSeekBar(MediaInfo.CurTime, MediaInfo.TOTALTIME)}", true, false);

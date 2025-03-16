@@ -34,7 +34,7 @@ namespace MelodyChatbox.Utils
             private readonly char _unfilledChar;
             private readonly char _cursorChar;
 
-            public StringSeekBar(int barLength = 30, char filledChar = '=', char unfilledChar = '-', char cursorChar = 'O')
+            public StringSeekBar(int barLength = 20, char filledChar = '=', char unfilledChar = '-', char cursorChar = 'O')
             {
                 _barLength = barLength;
                 _filledChar = filledChar;
@@ -45,7 +45,7 @@ namespace MelodyChatbox.Utils
             public string GenerateSeekBar(TimeSpan currentPosition, TimeSpan totalDuration)
             {
                 if (totalDuration.TotalSeconds == 0)
-                    return $"[{new string(_unfilledChar, _barLength)}] 00:00 / 00:00";
+                    return $"[{new string(_unfilledChar, _barLength)}]\n00:00 / 00:00";
 
                 double progressRatio = currentPosition.TotalSeconds / totalDuration.TotalSeconds;
                 int filledLength = (int)(_barLength * progressRatio);
@@ -55,7 +55,7 @@ namespace MelodyChatbox.Utils
                 string formattedCurrent = $"{(int)currentPosition.TotalMinutes:D2}:{currentPosition.Seconds:D2}";
                 string formattedTotal = $"{(int)totalDuration.TotalMinutes:D2}:{totalDuration.Seconds:D2}";
 
-                return $"[{seekBar}] {formattedCurrent} / {formattedTotal}";
+                return $"<[{seekBar}]>\n{formattedCurrent} / {formattedTotal}";
             }
         }
     }
